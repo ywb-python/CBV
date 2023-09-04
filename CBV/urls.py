@@ -26,6 +26,8 @@ urlpatterns = [
     re_path('student/(\d)+/', StudentDetailView.as_view()),
     path('publish/', PublishView.as_view()),
     re_path('publish/(\d)+/', PublishDetailView.as_view()),
+    path('author/', PublishView.as_view()),
+    re_path('author/(\d)+/', PublishDetailView.as_view()),
 ]
 
 

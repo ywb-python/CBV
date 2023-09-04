@@ -1,8 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework import serializers
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView
 
-from drf_demo.models import Student, Publish
+from drf_demo.models import Student, Publish, Author
 
 
 class StudentSerializer(serializers.Serializer):
@@ -100,6 +101,50 @@ class PublishDetailView(APIView):
 
     def put(self, request, nid):
         instance = Publish.objects.get(pk=nid)
+        serializer = PublishSerializer(data=request.data, instance=instance)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = ["name", "age"]
+
+
+class AuthorView(GenericAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+
+    def get(self, request):
+        serializer = self.get_serializer(instance=self.get_queryset(), many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid:
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+
+
+class AuthorDetailView(GenericAPIView):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
+    def get(self, request, nid):
+        serializer = self.get_serializer(instance=self.get_queryset(), many=False)
+        return Response(serializer.data)
+
+    def delete(self, request, nid):
+        self.get_object().delete()
+        return Response()
+
+    def put(self, request, nid):
+        instance = self.get_object()
         serializer = PublishSerializer(data=request.data, instance=instance)
         if serializer.is_valid():
             serializer.save()
