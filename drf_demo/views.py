@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework import serializers
 from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, \
     UpdateModelMixin
 
@@ -117,27 +117,12 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ["name", "age"]
 
 
-class AuthorView(GenericAPIView, ListModelMixin, CreateModelMixin):
+class AuthorView(ListCreateAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
-    def get(self, request):
-        return self.list(request)
 
-    def post(self, request):
-        return self.create(request)
-
-
-class AuthorDetailView(GenericAPIView, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin):
+class AuthorDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-
-    def get(self, request, nid):
-        return self.retrieve(request)
-
-    def delete(self, request, nid):
-        return self.destroy(request)
-
-    def put(self, request, nid):
-        return self.update(request)
 # Create your views here.
