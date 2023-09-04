@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from rest_framework import serializers
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, \
+    UpdateModelMixin
 
 from drf_demo.models import Student, Publish, Author
 
@@ -115,40 +117,27 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ["name", "age"]
 
 
-class AuthorView(GenericAPIView):
+class AuthorView(GenericAPIView, ListModelMixin, CreateModelMixin):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
     def get(self, request):
-        serializer = self.get_serializer(instance=self.get_queryset(), many=True)
-        return Response(serializer.data)
+        return self.list(request)
 
     def post(self, request):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid:
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+        return self.create(request)
 
 
-class AuthorDetailView(GenericAPIView):
+class AuthorDetailView(GenericAPIView, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
+
     def get(self, request, nid):
-        serializer = self.get_serializer(instance=self.get_queryset(), many=False)
-        return Response(serializer.data)
+        return self.retrieve(request)
 
     def delete(self, request, nid):
-        self.get_object().delete()
-        return Response()
+        return self.destroy(request)
 
     def put(self, request, nid):
-        instance = self.get_object()
-        serializer = PublishSerializer(data=request.data, instance=instance)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        else:
-            return Response(serializer.errors)
+        return self.update(request)
 # Create your views here.
