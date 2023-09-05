@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, RetrieveModelMixin, DestroyModelMixin, \
     UpdateModelMixin
+from rest_framework.viewsets import ModelViewSet
 
 from drf_demo.models import Student, Publish, Author
 
@@ -117,12 +118,7 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ["name", "age"]
 
 
-class AuthorView(ListCreateAPIView):
-    queryset = Author.objects.all()
-    serializer_class = AuthorSerializer
-
-
-class AuthorDetailView(RetrieveUpdateDestroyAPIView):
+class AuthorViewSet(ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 # Create your views here.

@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user.apps.UserConfig',
     'rest_framework',
-    'python_record.data.drf_demo.apps.DrfDemoConfig',
+    'drf_demo.apps.DrfDemoConfig',
 ]
 
 MIDDLEWARE = [
@@ -57,8 +57,7 @@ ROOT_URLCONF = 'CBV.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
