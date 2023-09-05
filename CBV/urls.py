@@ -17,7 +17,9 @@ from django.contrib import admin
 from django.urls import path, re_path
 
 from user.views import LoginView
-from drf_demo.views import StudentView, StudentDetailView, PublishView, PublishDetailView
+from drf_demo.views import StudentView, StudentDetailView, PublishView, \
+    PublishDetailView, AuthorViewSet
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,8 +28,8 @@ urlpatterns = [
     re_path('student/(\d)+/', StudentDetailView.as_view()),
     path('publish/', PublishView.as_view()),
     re_path('publish/(\d)+/', PublishDetailView.as_view()),
-    path('author/', PublishView.as_view()),
-    re_path('author/(\d)+/', PublishDetailView.as_view()),
+    path('author/', AuthorViewSet.as_view()),
+    re_path('author/(\d)+/', AuthorViewSet.as_view()),
 ]
 
 

@@ -18,7 +18,7 @@ class Book(models.Model):
     bread = models.IntegerField(verbose_name="阅读量")
     bcomment = models.IntegerField(verbose_name="评论量")
     publish = models.ForeignKey('Publish', verbose_name="出版社", on_delete=models.CASCADE)
-
+    author = models.ManyToManyField('Author', verbose_name='作者')
     def __str__(self):
         return self.title
 
