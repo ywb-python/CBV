@@ -41,28 +41,28 @@ resetframework的写法
                 return Response(serializer.errors)
 
 
-class StudentDetailView(APIView):
-
-    def get(self, request, nid):
-        student = Student.objects.get(pk=nid)
-        serializer = StudentSerializer(instance=student, many=False)
-        return Response(serializer.data)
+    class StudentDetailView(APIView):
     
-    def delete(self, request, nid):
-        Student.objects.get(pk=nid).delete()
-        return Response()
-    
-    def put(self, request, nid):
-        instance = Student.objects.get(pk=nid)
-        serializer = StudentSerializer(data=request.data, instance=instance)
-        try:
-            serializer.is_valid(raise_exception=True)
-            Student.objects.filter(pk=nid).update(**serializer.validated_data)
-            stu = Student.objects.get(pk=nid)
-            ser = StudentSerializer(instance=stu, many=False)
-            return Response(ser.data)
-        except:
-            return Response(serializer.errors)
+        def get(self, request, nid):
+            student = Student.objects.get(pk=nid)
+            serializer = StudentSerializer(instance=student, many=False)
+            return Response(serializer.data)
+        
+        def delete(self, request, nid):
+            Student.objects.get(pk=nid).delete()
+            return Response()
+        
+        def put(self, request, nid):
+            instance = Student.objects.get(pk=nid)
+            serializer = StudentSerializer(data=request.data, instance=instance)
+            try:
+                serializer.is_valid(raise_exception=True)
+                Student.objects.filter(pk=nid).update(**serializer.validated_data)
+                stu = Student.objects.get(pk=nid)
+                ser = StudentSerializer(instance=stu, many=False)
+                return Response(ser.data)
+            except:
+                return Response(serializer.errors)
 
 # 第二版
 
