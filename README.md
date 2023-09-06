@@ -39,8 +39,8 @@ resetframework的写法
                 return Response(ser.data)
             except:
                 return Response(serializer.errors)
-                
-                
+    
+    
     class StudentDetailView(APIView):
     
         def get(self, request, nid):
@@ -78,8 +78,8 @@ resetframework的写法
         class Meta:
             model = Publish
             fields = ["name", "email"]
-            
-            
+    
+    
     class PublishView(APIView):
     
         def get(self, request):
@@ -124,21 +124,26 @@ resetframework的写法
     from rest_framework.generics import GenericAPIView
     
     from drf_demo.models import Student, Publish, Author
-    
-    
+
+
+​    
     class AuthorSerializer(serializers.ModelSerializer):
     
         class Meta:
             model = Author
             fields = ["name", "age"]
-    
-    
+
+
+​    
     class AuthorView(GenericAPIView):
     
     	queryset = Author.objects.all()
         serializer_class = AuthorSerializer
     
         def get(self, request):
+       		# instance=self.get_queryset()可以替换成filter_queryset()或者paginate_queryset()
+       		#  当url匹配re_path('author/<?P=pk>(\d)+/', AuthorViewSet.as_view())这种有形参数时，要使用get_object()方法
+    
             serializer = self.get_serializer(instance=self.get_queryset(), many=True)
             return Response(serializer.data)
     
@@ -149,8 +154,9 @@ resetframework的写法
                 return Response(serializer.data)
             else:
                 return Response(serializer.errors)
-    
-    
+
+
+​    
     class AuthorDetailView(GenericAPIView):
     
         queryset = Author.objects.all()
@@ -189,8 +195,9 @@ resetframework的写法
         class Meta:
             model = Author
             fields = ["name", "age"]
-    
-    
+
+
+​    
     class AuthorView(GenericAPIView, ListModelMixin, CreateModelMixin):
     
     	queryset = Author.objects.all()
@@ -201,8 +208,9 @@ resetframework的写法
     
         def post(self, request):
             return self.create(request)
-    
-    
+
+
+​    
     class AuthorDetailView(GenericAPIView, RetrieveModelMixin, DestroyModelMixin, UpdateModelMixin):
     
         queryset = Author.objects.all()
@@ -227,21 +235,24 @@ resetframework的写法
         UpdateModelMixin
         
     from drf_demo.models import Student, Publish, Author
-    
-    
+
+
+​    
     class AuthorSerializer(serializers.ModelSerializer):
     
         class Meta:
             model = Author
             fields = ["name", "age"]
-     
-     
+
+
+​     
     class AuthorView(ListCreateAPIView):
     	
     	queryset = Author.objects.all()
     	serializer_class = AuthorSerializer
-    	
-    	
+
+
+​    	
     class AuthorDetailView(RetrieveUpdateDestroyAPIView):
     
     	queryset = Author.objects.all()
